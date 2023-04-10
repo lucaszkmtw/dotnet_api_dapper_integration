@@ -12,10 +12,11 @@ namespace DataAccess.Mapper
     public abstract class ClassMapT<T>
     {
         private Dictionary<string, string> _mappings = new Dictionary<string, string>();
-
+        public KeyValuePair<string, string> _id {get; set;}
         protected ClassMapT()
         {
             _mappings = new Dictionary<string, string>();
+            _id= new KeyValuePair<string, string>();    
         }
 
         public void Map<TProperty>(Expression<Func<T, TProperty>> propertyExpression, string columnName)
@@ -32,20 +33,37 @@ namespace DataAccess.Mapper
             switch (memberExpression.Member)
             {
                 case PropertyInfo pi when pi.PropertyType == typeof(DateTime):
-                    _mappings[propertyName] = $"{columnName} (datetime)";
+                    _mappings[propertyName] = $"{columnName}";
                     break;
                 case PropertyInfo pi when pi.PropertyType == typeof(long):
-                    _mappings[propertyName] = $"{columnName} (long)";
+                    _mappings[propertyName] = $"{columnName}";
                     break;
                 default:
                     _mappings[propertyName] = columnName;
                     break;
             }
         }
+        public void Id<TProperty>(Expression<Func<T, TProperty>> propertyExpression, string columnName)
+        {
+            var memberExpression = propertyExpression.Body as MemberExpression;
+
+            if (memberExpression == null)
+            {
+                throw new ArgumentException("Property expression should be a member expression");
+            }
+
+            var propertyName = memberExpression.Member.Name;
+            _id = new KeyValuePair<string, string>(propertyName, columnName);
+
+        }
 
         public Dictionary<string, string> GetColumnMappings()
         {
             return _mappings;
+        }
+        public KeyValuePair<string,string> GetIdColums()
+        {
+            return _id;
         }
     }
 
@@ -64,11 +82,11 @@ namespace DataAccess.Mapper
         public virtual bool mActivo { get; set; }
     }
 
-    public class Actividad1Map : ClassMapT<Actividad1>
+    public class ActividadMap : ClassMapT<Actividad1>
     {
-        public Actividad1Map()
+        public ActividadMap()
         {
-            Map(x => x.Id, "C_ID");
+            Id(x => x.Id, "C_ID");
             Map(x => x.DDescripcion, "D_DESCRIPCION");
             Map(x => x.FechaAlta, "FH_ALTA");
             Map(x => x.Usuario, "C_USUARIO");
