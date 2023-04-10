@@ -1,0 +1,15 @@
+C:\Users\lnoirat\Desktop\NEW_API\api_proyect\api_workflow\BussinessLogic\bin\Debug\net6.0\BussinessLogic.deps.json
+C:\Users\lnoirat\Desktop\NEW_API\api_proyect\api_workflow\BussinessLogic\bin\Debug\net6.0\BussinessLogic.dll
+C:\Users\lnoirat\Desktop\NEW_API\api_proyect\api_workflow\BussinessLogic\bin\Debug\net6.0\BussinessLogic.pdb
+C:\Users\lnoirat\Desktop\NEW_API\api_proyect\api_workflow\BussinessLogic\bin\Debug\net6.0\DataAccess.dll
+C:\Users\lnoirat\Desktop\NEW_API\api_proyect\api_workflow\BussinessLogic\bin\Debug\net6.0\DataAccess.pdb
+C:\Users\lnoirat\Desktop\NEW_API\api_proyect\api_workflow\BussinessLogic\obj\Debug\net6.0\BussinessLogic.csproj.AssemblyReference.cache
+C:\Users\lnoirat\Desktop\NEW_API\api_proyect\api_workflow\BussinessLogic\obj\Debug\net6.0\BussinessLogic.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\lnoirat\Desktop\NEW_API\api_proyect\api_workflow\BussinessLogic\obj\Debug\net6.0\BussinessLogic.AssemblyInfoInputs.cache
+C:\Users\lnoirat\Desktop\NEW_API\api_proyect\api_workflow\BussinessLogic\obj\Debug\net6.0\BussinessLogic.AssemblyInfo.cs
+C:\Users\lnoirat\Desktop\NEW_API\api_proyect\api_workflow\BussinessLogic\obj\Debug\net6.0\BussinessLogic.csproj.CoreCompileInputs.cache
+C:\Users\lnoirat\Desktop\NEW_API\api_proyect\api_workflow\BussinessLogic\obj\Debug\net6.0\BussinessLogic.csproj.CopyComplete
+C:\Users\lnoirat\Desktop\NEW_API\api_proyect\api_workflow\BussinessLogic\obj\Debug\net6.0\BussinessLogic.dll
+C:\Users\lnoirat\Desktop\NEW_API\api_proyect\api_workflow\BussinessLogic\obj\Debug\net6.0\refint\BussinessLogic.dll
+C:\Users\lnoirat\Desktop\NEW_API\api_proyect\api_workflow\BussinessLogic\obj\Debug\net6.0\BussinessLogic.pdb
+C:\Users\lnoirat\Desktop\NEW_API\api_proyect\api_workflow\BussinessLogic\obj\Debug\net6.0\ref\BussinessLogic.dll
