@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Infrastructure
 {
+
     public class GenericDataAccessService : SqlBuilder
     {
 

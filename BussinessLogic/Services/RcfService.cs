@@ -50,7 +50,7 @@ namespace DataAccess.Services
 
             ////Insert<Entidad>(entidad);
             IEnumerable<Entidad> entidades = GetAll<Entidad>();
-            IEnumerable<Entidad> entida1des = GetAll<Entidad>();
+            Entidad entida1des = GetById<Entidad>(546);
             //IEnumerable<Entidad> entidade1s = GetAll<Entidad>();
             List<long> listado_cuits = new List<long>();
             List<long> cuits_repetidos = new List<long>();
