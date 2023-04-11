@@ -34,7 +34,9 @@ namespace DataAccess.Infrastructure
             string attributtes = "";
             T instance = Activator.CreateInstance<T>();
             Dictionary<string, string> mapping = GetAttributeMapping<T>(instance, "_mappings");
-            var cositasId = GetAttributeId<T>(instance, "_id");
+            KeyValuePair<string,KeyValuePair<string,string>> IdMapping = GetAttributeId<T>(instance, "_id");
+            attributtes = attributtes + IdMapping.Value.Key + " AS " + IdMapping.Key + ",";
+
             foreach (KeyValuePair<string,string> property in mapping)
             {
 
