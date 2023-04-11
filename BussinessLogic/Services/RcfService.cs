@@ -50,7 +50,7 @@ namespace DataAccess.Services
 
             ////Insert<Entidad>(entidad);
             ///
-            IEnumerable<DataAccess.Mapper.Actividad1> actividad = GetAll<DataAccess.Mapper.Actividad1>();
+            IEnumerable<Actividad> actividad = GetAll<Actividad>();
             IEnumerable<Entidad> entidades = GetAll<Entidad>();
             Entidad entida1des = GetById<Entidad>(546);
             //IEnumerable<Entidad> entidade1s = GetAll<Entidad>();

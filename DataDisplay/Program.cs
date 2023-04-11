@@ -43,8 +43,8 @@ namespace Program
             // Console.WriteLine(sql);
             IEnumerable<Entidad> data = servicioDataAcess.GetAllEntidades();
 
-            var columnMappings = new DataAccess.Mapper.Actividad1().GetColumnMappings();
-            var idcolumn = new DataAccess.Mapper.Actividad1().GetIdColums();
+            var columnMappings = new Actividad().GetColumnMappings();
+            var idcolumn = new Actividad().GetIdColums();
             foreach (Entidad entidad in data)
             {
                 

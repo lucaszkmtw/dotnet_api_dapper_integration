@@ -32,17 +32,21 @@ namespace DataAccess.Infrastructure
         {
             PropertyInfo[] properties = typeof(T).GetProperties();
             string attributtes = "";
-            foreach (PropertyInfo property in properties)
+            T instance = Activator.CreateInstance<T>();
+            Dictionary<string, string> mapping = GetAttributeMapping<T>(instance, "_mappings");
+            var cositasId = GetAttributeId<T>(instance, "_id");
+            foreach (KeyValuePair<string,string> property in mapping)
             {
-                //T instance = Activator.CreateInstance<T>();
-                //var value = GetAttributeValue(instance, "_mappings");
-                ColumnAttribute attribute = (ColumnAttribute)Attribute.GetCustomAttribute(property, typeof(ColumnAttribute));
 
-                var propertyType = property.PropertyType.Name;
-                if (Array.Exists(TypeList, element => element == propertyType))
-                {
-                    attributtes = attributtes + attribute.name + " AS " + property.Name + ",";
-                }
+                //var id = GetAttributeValue(instance, "_id");
+                //ColumnAttribute attribute = (ColumnAttribute)Attribute.GetCustomAttribute(property, typeof(ColumnAttribute));
+                attributtes = attributtes + property.Value + " AS " + property.Key + ",";
+
+                //var propertyType = property.PropertyType.Name;
+                //if (Array.Exists(TypeList, element => element == propertyType))
+                //{
+                //    attributtes = attributtes + attribute.name + " AS " + property.Name + ",";
+                //}
             }
 
             return attributtes.Remove(attributtes.Length - 1); ;
@@ -51,11 +55,15 @@ namespace DataAccess.Infrastructure
         }
         public string FromTableAndSchema<T>()
         {
+            T instance = Activator.CreateInstance<T>();
 
-            SchemaAttribute Schema = (SchemaAttribute)Attribute.GetCustomAttribute(typeof(T), typeof(SchemaAttribute));
-            TableAttribute table = (TableAttribute)Attribute.GetCustomAttribute(typeof(T), typeof(TableAttribute));
+            string schema = GetStringAttribute<T>(instance, "_schema");
+            string table = GetStringAttribute<T>(instance, "_table");
+            //SchemaAttribute Schema = (SchemaAttribute)Attribute.GetCustomAttribute(typeof(T), typeof(SchemaAttribute));
+            //TableAttribute table = (TableAttribute)Attribute.GetCustomAttribute(typeof(T), typeof(TableAttribute));
 
-            string fromtable = $" FROM {Schema.name}.{table.name}";
+
+            string fromtable = $" FROM {schema}.{table}";
 
             return fromtable;
         }
