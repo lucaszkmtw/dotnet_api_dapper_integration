@@ -38,7 +38,7 @@ namespace DataAccess.Services
             //Actividad actividad = GetById<Actividad>(34);
             //actividad.Url = "PUDE INGRESARLO";
             ////Insert<Actividad>(actividad);
-            
+
 
             //actividad.Descripcion = "otra cosita";
             ////InsertQuery<Entidad>(entidad);
@@ -49,6 +49,8 @@ namespace DataAccess.Services
             //IEnumerable<Entidad> getdata = GetBySearch<Entidad>(search);
 
             ////Insert<Entidad>(entidad);
+            ///
+            IEnumerable<DataAccess.Mapper.Actividad1> actividad = GetAll<DataAccess.Mapper.Actividad1>();
             IEnumerable<Entidad> entidades = GetAll<Entidad>();
             Entidad entida1des = GetById<Entidad>(546);
             //IEnumerable<Entidad> entidade1s = GetAll<Entidad>();

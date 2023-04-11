@@ -1,5 +1,7 @@
 ﻿using DataAccess.CustomAttributes;
 using DataAccess.Helpers;
+using DataAccess.Infrastructure.Generic;
+using DataAccess.Mapper;
 using DataAccess.Mapping;
 using Microsoft.VisualBasic;
 using System;
@@ -13,13 +15,12 @@ using System.Numerics;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-using static Dapper.SqlMapper;
 
 namespace DataAccess.Infrastructure
 {
-    public class QueryConstructor
+    public class QueryConstructor : GenericFunction
     {
-
+     
         public string[] TypeList = { "String", "Int64", "Int32", "DateTime" };
         public string SelectAll()
         {
@@ -33,7 +34,8 @@ namespace DataAccess.Infrastructure
             string attributtes = "";
             foreach (PropertyInfo property in properties)
             {
-
+                //T instance = Activator.CreateInstance<T>();
+                //var value = GetAttributeValue(instance, "_mappings");
                 ColumnAttribute attribute = (ColumnAttribute)Attribute.GetCustomAttribute(property, typeof(ColumnAttribute));
 
                 var propertyType = property.PropertyType.Name;
