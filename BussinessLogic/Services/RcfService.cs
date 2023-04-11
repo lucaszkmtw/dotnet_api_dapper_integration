@@ -51,6 +51,7 @@ namespace DataAccess.Services
             ////Insert<Entidad>(entidad);
             ///
             IEnumerable<Actividad> actividad = GetAll<Actividad>();
+            Actividad actividadId = GetById<Actividad>(117);
             IEnumerable<Entidad> entidades = GetAll<Entidad>();
             Entidad entida1des = GetById<Entidad>(546);
             //IEnumerable<Entidad> entidade1s = GetAll<Entidad>();

@@ -105,16 +105,16 @@ namespace DataAccess.Infrastructure
 
         public string IdMethod<T>(object id)
         {
+            T instance = Activator.CreateInstance<T>();
             PropertyInfo[] properties = typeof(T).GetProperties();
             //properties.Where()
             string idEntity = "";
             foreach (PropertyInfo property in properties)
             {
 
-                IdModel attribute = (IdModel)Attribute.GetCustomAttribute(property, typeof(IdModel));
-                if (attribute != null)
+                KeyValuePair<string, KeyValuePair<string, string>> IdMapping = GetAttributeId<T>(instance, "_id");
                 {
-                    idEntity = attribute.Id;
+                    idEntity = IdMapping.Value.Key;
                 }
 
             }
