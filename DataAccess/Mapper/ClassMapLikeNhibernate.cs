@@ -16,7 +16,7 @@ namespace DataAccess.Mapper
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         public Dictionary<string, string> _mappings = new Dictionary<string, string>();
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        public KeyValuePair<string, KeyValuePair<string, string>> _id { get; set; }
+        public KeyValuePair<string, KeyValuePair<string, string>> _id = new  KeyValuePair<string, KeyValuePair<string, string>>();
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         public  string _schema = "";
@@ -70,7 +70,7 @@ namespace DataAccess.Mapper
             }
 
             var propertyName = memberExpression.Member.Name;
-            _id = new KeyValuePair<string, KeyValuePair<string, string>>(propertyName, new KeyValuePair<string, string>(columnName, sequence));
+            _id = new KeyValuePair<string, KeyValuePair<string, string>>(columnName, new KeyValuePair<string, string>(propertyName, sequence));
 
         }
         public void Schema(string columnName)

@@ -14,33 +14,43 @@ namespace DataAccess.Infrastructure
 
     public class SqlBuilder : QueryConstructor
     {
-       
+        private static SqlBuilder instance;
 
-        public SqlBuilder() { }
+        public new static SqlBuilder Instance
+        {
+            get
+            {
+                if (instance == null)
+                {
+                    instance = new SqlBuilder();
+                }
+                return instance;
+            }
+        }
 
-        
-        public string GetAllQuery<T>() {
 
-         string query = SelectAll() +  AddParaMeters<T>() + FromTableAndSchema<T>();
+        public string GetAllQuery<T>(T instance) {
+           
+            string query = SelectAll() +  AddParaMeters<T>(instance) + FromTableAndSchema<T>(instance);
 
 
             return query;
         }
 
 
-        public string GetBySearchQuery<T>(Search search)
+        public string GetBySearchQuery<T>(Search search, T instance)
         {
 
-            string query = SelectAll() + AddParaMeters<T>() + FromTableAndSchema<T>() + WhereMethod(search);
+            string query = SelectAll() + AddParaMeters<T>(instance) + FromTableAndSchema<T>(instance) + WhereMethod(search);
 
             return query;
         }
 
 
-        public string GetByIdQuery<T>(long Id)
+        public string GetByIdQuery<T>(long Id, T instance)
         {
 
-            string query = SelectAll() + AddParaMeters<T>() + FromTableAndSchema<T>() + IdMethod<T>(Id);
+            string query = SelectAll() + AddParaMeters<T>(instance) + FromTableAndSchema<T>(instance) + IdMethod<T>(Id, instance);
 
             return query;
         }
@@ -49,9 +59,9 @@ namespace DataAccess.Infrastructure
         {
             KeyValuePair<string, string> data = ColumnsAndValues<T>(model);
 
-            string query =$" {InsertMethod<T>()}  ({data.Key}) VALUES ({data.Value})";
+            string query =$" {InsertMethod<T>(model)}  ({data.Key}) VALUES ({data.Value})";
             return query;
-        }
+       }
 
 
         public string UpdateQuery<T>(T model)
@@ -70,7 +80,7 @@ namespace DataAccess.Infrastructure
                 }
 
             }
-            string query = $"{UpdateMethod<T>(model)} {IdMethod<T>(id)}";
+            string query = $"{UpdateMethod<T>(model)} {IdMethod<T>(id, model)}";
 
             return query;
             

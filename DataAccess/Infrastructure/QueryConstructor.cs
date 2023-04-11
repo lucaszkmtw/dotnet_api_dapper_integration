@@ -10,6 +10,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.DirectoryServices.ActiveDirectory;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
 using System.Numerics;
 using System.Reflection;
@@ -20,7 +21,11 @@ namespace DataAccess.Infrastructure
 {
     public class QueryConstructor : GenericFunction
     {
-     
+
+        public QueryConstructor()
+        {
+
+        }
         public string[] TypeList = { "String", "Int64", "Int32", "DateTime" };
         public string SelectAll()
         {
@@ -28,16 +33,17 @@ namespace DataAccess.Infrastructure
 
             return select;
         }
-        public string AddParaMeters<T>()
+
+        public string AddParaMeters<T>(T instance)
         {
             PropertyInfo[] properties = typeof(T).GetProperties();
             string attributtes = "";
-            T instance = Activator.CreateInstance<T>();
-            Dictionary<string, string> mapping = GetAttributeMapping<T>(instance, "_mappings");
-            KeyValuePair<string,KeyValuePair<string,string>> IdMapping = GetAttributeId<T>(instance, "_id");
-            attributtes = attributtes + IdMapping.Value.Key + " AS " + IdMapping.Key + ",";
 
-            foreach (KeyValuePair<string,string> property in mapping)
+            Dictionary<string, string> mapping = GetAttributeMapping<T>(instance, "_mappings");
+            KeyValuePair<string, KeyValuePair<string, string>> IdMapping = GetAttributeId<T>(instance, "_id");
+            attributtes = attributtes + IdMapping.Key + " AS " + IdMapping.Value.Key + ",";
+
+            foreach (KeyValuePair<string, string> property in mapping)
             {
 
                 //var id = GetAttributeValue(instance, "_id");
@@ -55,9 +61,9 @@ namespace DataAccess.Infrastructure
 
 
         }
-        public string FromTableAndSchema<T>()
+        public string FromTableAndSchema<T>(T instance)
         {
-            T instance = Activator.CreateInstance<T>();
+
 
             string schema = GetStringAttribute<T>(instance, "_schema");
             string table = GetStringAttribute<T>(instance, "_table");
@@ -103,23 +109,19 @@ namespace DataAccess.Infrastructure
         }
 
 
-        public string IdMethod<T>(object id)
+        public string IdMethod<T>(object id, T instance)
         {
-            T instance = Activator.CreateInstance<T>();
-            PropertyInfo[] properties = typeof(T).GetProperties();
+          
             //properties.Where()
             string idEntity = "";
-            foreach (PropertyInfo property in properties)
+            KeyValuePair<string, KeyValuePair<string, string>> IdMapping = GetAttributeId<T>(instance, "_id");
             {
-
-                KeyValuePair<string, KeyValuePair<string, string>> IdMapping = GetAttributeId<T>(instance, "_id");
-                {
-                    idEntity = IdMapping.Value.Key;
-                }
-
+                idEntity = IdMapping.Key;
             }
+            PropertyInfo prop = typeof(T).GetProperty(IdMapping.Value.Key);
+            if (prop.GetValue(instance, null) != null) { id = prop.GetValue(instance, null); }
             string WhereQuery = $" WHERE {idEntity}={id}";
-
+           
             return WhereQuery;
         }
 
@@ -139,13 +141,13 @@ namespace DataAccess.Infrastructure
 
         }
 
-        public string InsertMethod<T>()
+        public string InsertMethod<T>(T model)
         {
 
             //Type attributesModel = model.GetType();
-            SchemaAttribute Schema = (SchemaAttribute)Attribute.GetCustomAttribute(typeof(T), typeof(SchemaAttribute));
-            TableAttribute table = (TableAttribute)Attribute.GetCustomAttribute(typeof(T), typeof(TableAttribute));
-            string query = $"INSERT INTO {Schema.name}.{table.name} ";
+            string schema = GetStringAttribute<T>(model, "_schema");
+            string table = GetStringAttribute<T>(model, "_table");
+            string query = $"INSERT INTO {schema}.{table} ";
 
             return query;
 
@@ -156,45 +158,49 @@ namespace DataAccess.Infrastructure
 
         public KeyValuePair<string, string> ColumnsAndValues<T>(T model)
         {
-            SchemaAttribute Schema = (SchemaAttribute)Attribute.GetCustomAttribute(typeof(T), typeof(SchemaAttribute));
-            TableAttribute table = (TableAttribute)Attribute.GetCustomAttribute(typeof(T), typeof(TableAttribute));
+            Dictionary<string, string> mapping = GetAttributeMapping<T>(model, "_mappings");
+            KeyValuePair<string, KeyValuePair<string, string>> IdMapping = GetAttributeId<T>(model, "_id");
+            string schema = GetStringAttribute<T>(model, "_schema");
+            string table = GetStringAttribute<T>(model, "_table");
+            //SchemaAttribute Schema = (SchemaAttribute)Attribute.GetCustomAttribute(typeof(T), typeof(SchemaAttribute));
             string values = "";
             string columns = "";
+
+
+
             PropertyInfo[] props = model.GetType().GetProperties();
+
             foreach (PropertyInfo prop in props)
             {
-                if ((IdModel)Attribute.GetCustomAttribute(prop, typeof(IdModel)) != null)
+
+                if (IdMapping.Value.Key != prop.Name)
                 {
-                    IdModel propAttribute = (IdModel)Attribute.GetCustomAttribute(prop, typeof(IdModel));
-
-                    columns += $"{propAttribute.Id} ,";
-                    values += $"{Schema.name}.{propAttribute.sequence}.nextval ,";
-                    //if(propAttribute.sequence= "")
-                    //{
 
 
-                    //}
-                }
-                else
-                {
+
+
                     if (prop.GetValue(model, null) != null)
                     {
                         if (prop.PropertyType == typeof(string))
                         {
-                            ColumnAttribute propAttribute = (ColumnAttribute)Attribute.GetCustomAttribute(prop, typeof(ColumnAttribute));
-                            columns += $"{propAttribute.name} ,";
+                            columns += $"{mapping[prop.Name]} ,";
                             values += $"'{prop.GetValue(model, null)}' ,";
+                        }
+                        if (prop.PropertyType == typeof(bool) && prop.GetValue(model, null) is bool value)
+                        {
+                            columns += $"{mapping[prop.Name]} ,";
+                            if (value is true) { values += $"{1} ,"; }
+                            if (value is false) { values += $"{0} ,"; }
+                            if (value == null) { values += $"'{null}' ,"; }
                         }
                         if (prop.PropertyType == typeof(long) || prop.PropertyType == typeof(int))
                         {
-                            ColumnAttribute propAttribute = (ColumnAttribute)Attribute.GetCustomAttribute(prop, typeof(ColumnAttribute));
-                            columns += $"{propAttribute.name} ,";
+                            columns += $"{mapping[prop.Name]} ,";
                             values += $"{prop.GetValue(model, null)} ,";
                         }
                         if (prop.PropertyType == typeof(DateTime))
                         {
-                            ColumnAttribute propAttribute = (ColumnAttribute)Attribute.GetCustomAttribute(prop, typeof(ColumnAttribute));
-                            columns += $"{propAttribute.name} ,";
+                            columns += $"{mapping[prop.Name]} ,";
                             DateTime date = Convert.ToDateTime(prop.GetValue(model, null));
                             values += $"TO_DATE('{date.Year}/{date.Month}/{date.Day} {date.Hour}:{date.Minute}', 'yyyy/mm/dd hh24:mi'),";
                         }
@@ -202,7 +208,18 @@ namespace DataAccess.Infrastructure
                     }
 
                 }
+                else
+                {
+                    if (IdMapping.Key != null)
+                    {
+                        columns += $"{IdMapping.Key} ,";
+                        values += $"{schema}.{IdMapping.Value.Value}.nextval ,";
+                    }
+                }
             }
+
+
+
             KeyValuePair<string, string> data = new KeyValuePair<string, string>(columns.Remove(columns.Length - 1), values.Remove(values.Length - 1));
 
             return data;
@@ -212,44 +229,57 @@ namespace DataAccess.Infrastructure
 
         public string UpdateMethod<T>(T model)
         {
-            SchemaAttribute Schema = (SchemaAttribute)Attribute.GetCustomAttribute(typeof(T), typeof(SchemaAttribute));
-            TableAttribute table = (TableAttribute)Attribute.GetCustomAttribute(typeof(T), typeof(TableAttribute));
-            string query = $"UPDATE {Schema.name}.{table.name} SET ";
+            //SchemaAttribute Schema = (SchemaAttribute)Attribute.GetCustomAttribute(typeof(T), typeof(SchemaAttribute));
+            //TableAttribute table = (TableAttribute)Attribute.GetCustomAttribute(typeof(T), typeof(TableAttribute));
+            Dictionary<string, string> mapping = GetAttributeMapping<T>(model, "_mappings");
+            KeyValuePair<string, KeyValuePair<string, string>> IdMapping = GetAttributeId<T>(model, "_id");
+            string schema = GetStringAttribute<T>(model, "_schema");
+            string table = GetStringAttribute<T>(model, "_table");
+            string query = $"UPDATE {schema}.{table} SET ";
 
 
             string values = "";
-           
+
             PropertyInfo[] props = model.GetType().GetProperties();
             foreach (PropertyInfo prop in props)
             {
-                if ((IdModel)Attribute.GetCustomAttribute(prop, typeof(IdModel)) != null){}
-                else
+
+                if (IdMapping.Value.Key != prop.Name)
                 {
+
+
+
+
                     if (prop.GetValue(model, null) != null)
                     {
+                        if (prop.PropertyType == typeof(bool) && prop.GetValue(model, null) is bool value)
+                        {
+                            if (value is true) { values += $"{mapping[prop.Name]} ={1} ,"; }
+                            if (value is false) { values += $"{mapping[prop.Name]} ={0} ,"; }
+                            if (value == null) { values += $"{mapping[prop.Name]} ='{null}' ,"; }
+                        }
                         if (prop.PropertyType == typeof(string))
                         {
-                            ColumnAttribute propAttribute = (ColumnAttribute)Attribute.GetCustomAttribute(prop, typeof(ColumnAttribute));
-                            values += $"{propAttribute.name} = '{prop.GetValue(model, null)}' ,";
+                            //columns += $"{mapping[prop.Name]} ,";
+                            values += $"{mapping[prop.Name]} = '{prop.GetValue(model, null)}' ,";
                         }
                         if (prop.PropertyType == typeof(long) || prop.PropertyType == typeof(int))
                         {
-                            ColumnAttribute propAttribute = (ColumnAttribute)Attribute.GetCustomAttribute(prop, typeof(ColumnAttribute));
-
-                            values += $"{propAttribute.name} = {prop.GetValue(model, null)} ,";
+                            //columns += $"{mapping[prop.Name]} ,";
+                            values += $"{mapping[prop.Name]} = {prop.GetValue(model, null)} ,";
                         }
                         if (prop.PropertyType == typeof(DateTime))
                         {
-                            ColumnAttribute propAttribute = (ColumnAttribute)Attribute.GetCustomAttribute(prop, typeof(ColumnAttribute));
+                            //columns += $"{mapping[prop.Name]} ,";
                             DateTime date = Convert.ToDateTime(prop.GetValue(model, null));
-                            values += $"{propAttribute.name} = TO_DATE('{date.Year}/{date.Month}/{date.Day} {date.Hour}:{date.Minute}', 'yyyy/mm/dd hh24:mi') ,";
+                            values += $"{mapping[prop.Name]} = TO_DATE('{date.Year}/{date.Month}/{date.Day} {date.Hour}:{date.Minute}', 'yyyy/mm/dd hh24:mi') ,";
                         }
 
                     }
 
                 }
+               
             }
-
 
 
 

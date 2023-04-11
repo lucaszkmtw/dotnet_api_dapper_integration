@@ -50,30 +50,42 @@ namespace DataAccess.Services
 
             ////Insert<Entidad>(entidad);
             ///
+            Actividad oasdosao = new Actividad();
+            oasdosao.Usuario = "admin";
+            oasdosao.Id = 147;
+            oasdosao.DDestinoGdeba = "tumkadre";
+            oasdosao.DDescripcion = "KSDKASDK";
+            oasdosao.Url = "sakdsakds";
+            oasdosao.mPaseGdeba = true;
+            oasdosao.idWorkflow = 1;
+            oasdosao.mActivo = true;
+            //Update<Actividad>(oasdosao);
+            //Insert<Actividad>(oasdosao);
             IEnumerable<Actividad> actividad = GetAll<Actividad>();
-            Actividad actividadId = GetById<Actividad>(117);
             IEnumerable<Entidad> entidades = GetAll<Entidad>();
+            Actividad actividadId = GetById<Actividad>(117);
             Entidad entida1des = GetById<Entidad>(546);
             //IEnumerable<Entidad> entidade1s = GetAll<Entidad>();
             List<long> listado_cuits = new List<long>();
             List<long> cuits_repetidos = new List<long>();
 
+            
+            
 
+            //foreach (Entidad entidad in entidades)
+            //{
 
-            foreach (Entidad entidad in entidades)
-            {
+            //    if (!listado_cuits.Contains(entidad.cuit)){
+            //        listado_cuits.Add(entidad.cuit);
 
-                if (!listado_cuits.Contains(entidad.cuit)){
-                    listado_cuits.Add(entidad.cuit);
-
-                }
-                else
-                {
-                    cuits_repetidos.Add(entidad.cuit);
-                }
+            //    }
+            //    else
+            //    {
+            //        cuits_repetidos.Add(entidad.cuit);
+            //    }
                 
 
-            }
+            ////}
 
             //int cuantos = entidades.Count();
 

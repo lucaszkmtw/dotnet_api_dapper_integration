@@ -11,18 +11,20 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Infrastructure
 {
+  
+    public class GenericDataAccessService
+         
 
-    public class GenericDataAccessService : SqlBuilder
     {
-
+        protected SqlBuilder Querybuilder = SqlBuilder.Instance;
 
         private RepositoryAccess repository = new RepositoryAccess("Data Source=10.50.90.117:1521/DESA2; User Id=rcf; Password=rcfteso2; Min Pool Size=10; Connection Lifetime = 120; Connection Timeout = 5; Incr Pool Size=5; Decr Pool Size=2;");
 
 
         public IEnumerable<T> GetAll<T>() where T : class {
            IDbConnection con = repository.GetConnection();
-
-            IEnumerable<T> dataEntity = con.Query<T>(GetAllQuery<T>());
+            T instance = Activator.CreateInstance<T>();
+            IEnumerable<T> dataEntity = con.Query<T>(Querybuilder.GetAllQuery<T>(instance));
             //repository.CloseConnection(con);
             return dataEntity.ToList();
 
@@ -32,16 +34,18 @@ namespace DataAccess.Infrastructure
 
         public IEnumerable<T> GetBySearch<T>(Search search)
         {
+            T instance = Activator.CreateInstance<T>();
             IDbConnection con = repository.GetConnection();
-            IEnumerable<T> dataEntity = con.Query<T>(GetBySearchQuery<T>(search));
+            IEnumerable<T> dataEntity = con.Query<T>(Querybuilder.GetBySearchQuery<T>(search, instance));
             //repository.CloseConnection(con);
             return dataEntity.ToList();
         }
 
         public T GetById<T>(long Id)
         {
+            T instance = Activator.CreateInstance<T>();
             IDbConnection con = repository.GetConnection();
-            IEnumerable<T> dataEntity = con.Query<T>(GetByIdQuery<T>(Id));
+            IEnumerable<T> dataEntity = con.Query<T>(Querybuilder.GetByIdQuery<T>(Id, instance));
             //repository.CloseConnection(con);
 
             return dataEntity.FirstOrDefault();
@@ -52,7 +56,7 @@ namespace DataAccess.Infrastructure
         public void Insert<T>(T Model)
         {
             IDbConnection con = repository.GetConnection();
-            con.Execute(InsertQuery<T>(Model));
+            con.Execute(Querybuilder.InsertQuery<T>(Model));
 
 
             //repository.CloseConnection(con);
@@ -62,8 +66,8 @@ namespace DataAccess.Infrastructure
         public void Update<T>(T Model)
         {
             IDbConnection con = repository.GetConnection();
-           
-            con.Execute(UpdateQuery<T>(Model));
+            T instance = Activator.CreateInstance<T>();
+            con.Execute(Querybuilder.UpdateQuery<T>(Model));
 
 
             //repository.CloseConnection(con);
@@ -72,7 +76,7 @@ namespace DataAccess.Infrastructure
         public T GetCurrentDate<T>()
         {
             IDbConnection con = repository.GetConnection();
-            T date = con.QueryFirst<T>(CurrentDateTimeQuery());
+            T date = con.QueryFirst<T>(Querybuilder.CurrentDateTimeQuery());
             //repository.CloseConnection(con);
 
             return date;

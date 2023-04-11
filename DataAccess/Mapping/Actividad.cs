@@ -21,7 +21,7 @@ namespace DataAccess.Mapping {
         {
             Table("WF_ACTIVIDAD");
             Schema("WF");
-            Id(x => x.Id, "C_ID", "SQ_ACTIVIDAD");
+            Id(x => x.Id, "C_ID", "WF_ACTIVIDAD_SQ");
             Map(x => x.DDescripcion, "D_DESCRIPCION");
             Map(x => x.FechaAlta, "FH_ALTA");
             Map(x => x.Usuario, "C_USUARIO");
