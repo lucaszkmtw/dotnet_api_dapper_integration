@@ -152,7 +152,22 @@ namespace DataAccess.Infrastructure
             return query;
 
         }
+        public string DeleteMethod<T>(long id, T instance)
+        {
+            string idEntity = "";
+            KeyValuePair<string, KeyValuePair<string, string>> IdMapping = GetAttributeId<T>(instance, "_id");
+            {
+                idEntity = IdMapping.Key;
+            }
+            PropertyInfo prop = typeof(T).GetProperty(IdMapping.Value.Key);
+            //Type attributesModel = model.GetType();
+            string schema = GetStringAttribute<T>(instance, "_schema");
+            string table = GetStringAttribute<T>(instance, "_table");
+            string query = $"DELETE FROM {schema}.{table} WHERE {idEntity}={id} ";
 
+            return query;
+
+        }
 
 
 

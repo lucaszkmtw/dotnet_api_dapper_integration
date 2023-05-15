@@ -62,6 +62,12 @@ namespace DataAccess.Infrastructure
             string query =$" {InsertMethod<T>(model)}  ({data.Key}) VALUES ({data.Value})";
             return query;
        }
+        public string DeleteQuery<T>(long id, T instance)
+        {
+
+            string query = $" {DeleteMethod<T>(id)}";
+            return query;
+        }
 
 
         public string UpdateQuery<T>(T model)
