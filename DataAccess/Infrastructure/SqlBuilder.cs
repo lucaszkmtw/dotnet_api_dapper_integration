@@ -65,7 +65,7 @@ namespace DataAccess.Infrastructure
         public string DeleteQuery<T>(long id, T instance)
         {
 
-            string query = $" {DeleteMethod<T>(id)}";
+            string query = $" {DeleteMethod<T>(id, instance)}";
             return query;
         }
 
