@@ -119,7 +119,11 @@ namespace DataAccess.Infrastructure
                 idEntity = IdMapping.Key;
             }
             PropertyInfo prop = typeof(T).GetProperty(IdMapping.Value.Key);
-            if (prop.GetValue(instance, null) != null) { id = prop.GetValue(instance, null); }
+            if (id == null) {
+                id = prop.GetValue(instance, null);
+            }
+          
+            //if (prop.GetValue(instance, null) != null) { id = prop.GetValue(instance, null); }
             string WhereQuery = $" WHERE {idEntity}={id}";
            
             return WhereQuery;
