@@ -59,7 +59,7 @@ namespace DataAccess.Services
             oasdosao.mPaseGdeba = true;
             oasdosao.idWorkflow = 1;
             oasdosao.mActivo = true;
-            Update<Actividad>(oasdosao);
+            //Update<Actividad>(oasdosao);
             //Insert<Actividad>(oasdosao);
             IEnumerable<Actividad> actividad = GetAll<Actividad>();
             IEnumerable<Entidad> entidades = GetAll<Entidad>();

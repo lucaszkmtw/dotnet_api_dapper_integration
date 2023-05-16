@@ -74,18 +74,18 @@ namespace DataAccess.Infrastructure
         {
             object id = null;
 
-            PropertyInfo[] properties = typeof(T).GetProperties();
-            foreach (PropertyInfo property in properties)
-            {
-                if ((IdModel)Attribute.GetCustomAttribute(property, typeof(IdModel)) != null)
-                {
-                   id = property.GetValue(model, null);
+            //PropertyInfo[] properties = typeof(T).GetProperties();
+            //foreach (PropertyInfo property in properties)
+            //{
+            //    if ((IdModel)Attribute.GetCustomAttribute(property, typeof(IdModel)) != null)
+            //    {
+            //       id = property.GetValue(model, null);
 
 
 
-                }
+            //    }
 
-            }
+            //}
             string query = $"{UpdateMethod<T>(model)} {IdMethod<T>(id, model)}";
 
             return query;
