@@ -182,8 +182,17 @@ like this :
 }
 
 
-``` Query Examples - adding The actividad Mapping as Example 
+``` Query Examples - adding The actividad Mapping as Example
+-Get All the element in a table
   List<Actividad> documentos = service.GetAll<Actividad>(repo).ToList();
+
+-Searching By Id
   Actividad documentos = service.GetById<Actividad>({some_id}, repo).ToList();
+
+-Example of searchin with a value in a register of database
+  Search search = new Search(typeof(Actividad));
+                search.AddAlias(new KeyValuePair<string, object>("{D_DESCRIPCION}", "{description}" ));
+
+                DocumentoLiquidacion documentoInfo = service.GetBySearch<Actividad>(search, repo).FirstOrDefault();
 
 
