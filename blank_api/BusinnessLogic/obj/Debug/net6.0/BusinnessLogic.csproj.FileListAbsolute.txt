@@ -1,0 +1,15 @@
+C:\Users\lnoirat\Desktop\Github_lucazkmtw\dotnet_api_dapper_integration\blank_api\BusinnessLogic\obj\Debug\net6.0\BusinnessLogic.csproj.AssemblyReference.cache
+C:\Users\lnoirat\Desktop\Github_lucazkmtw\dotnet_api_dapper_integration\blank_api\BusinnessLogic\obj\Debug\net6.0\BusinnessLogic.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\lnoirat\Desktop\Github_lucazkmtw\dotnet_api_dapper_integration\blank_api\BusinnessLogic\obj\Debug\net6.0\BusinnessLogic.AssemblyInfoInputs.cache
+C:\Users\lnoirat\Desktop\Github_lucazkmtw\dotnet_api_dapper_integration\blank_api\BusinnessLogic\obj\Debug\net6.0\BusinnessLogic.AssemblyInfo.cs
+C:\Users\lnoirat\Desktop\Github_lucazkmtw\dotnet_api_dapper_integration\blank_api\BusinnessLogic\obj\Debug\net6.0\BusinnessLogic.csproj.CoreCompileInputs.cache
+C:\Users\lnoirat\Desktop\Github_lucazkmtw\dotnet_api_dapper_integration\blank_api\BusinnessLogic\bin\Debug\net6.0\BusinnessLogic.deps.json
+C:\Users\lnoirat\Desktop\Github_lucazkmtw\dotnet_api_dapper_integration\blank_api\BusinnessLogic\bin\Debug\net6.0\BusinnessLogic.dll
+C:\Users\lnoirat\Desktop\Github_lucazkmtw\dotnet_api_dapper_integration\blank_api\BusinnessLogic\bin\Debug\net6.0\BusinnessLogic.pdb
+C:\Users\lnoirat\Desktop\Github_lucazkmtw\dotnet_api_dapper_integration\blank_api\BusinnessLogic\bin\Debug\net6.0\DataAccess.dll
+C:\Users\lnoirat\Desktop\Github_lucazkmtw\dotnet_api_dapper_integration\blank_api\BusinnessLogic\bin\Debug\net6.0\DataAccess.pdb
+C:\Users\lnoirat\Desktop\Github_lucazkmtw\dotnet_api_dapper_integration\blank_api\BusinnessLogic\obj\Debug\net6.0\BusinnessLogic.csproj.CopyComplete
+C:\Users\lnoirat\Desktop\Github_lucazkmtw\dotnet_api_dapper_integration\blank_api\BusinnessLogic\obj\Debug\net6.0\BusinnessLogic.dll
+C:\Users\lnoirat\Desktop\Github_lucazkmtw\dotnet_api_dapper_integration\blank_api\BusinnessLogic\obj\Debug\net6.0\refint\BusinnessLogic.dll
+C:\Users\lnoirat\Desktop\Github_lucazkmtw\dotnet_api_dapper_integration\blank_api\BusinnessLogic\obj\Debug\net6.0\BusinnessLogic.pdb
+C:\Users\lnoirat\Desktop\Github_lucazkmtw\dotnet_api_dapper_integration\blank_api\BusinnessLogic\obj\Debug\net6.0\ref\BusinnessLogic.dll
