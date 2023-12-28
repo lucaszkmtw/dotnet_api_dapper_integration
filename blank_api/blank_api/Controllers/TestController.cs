@@ -27,13 +27,13 @@ namespace API_Pagos.Controllers
 
 
         // here use the access to database with the business logic files, look that we use DTO's /(data transfer object for more adaptability)
-        [HttpGet("Actividades")]
+        [HttpGet("Actividad")]
         public List<ActividadDTO> Actividades()
         {
            return _service.GetAllActividades();   
 
         }
-        [HttpGet("Actividad")]
+        [HttpGet("Actividad/{id:long}")]
         public ActividadDTO GetById(long id)
         {
             return _service.GetById(id);
