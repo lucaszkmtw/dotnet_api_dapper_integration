@@ -33,7 +33,18 @@ namespace API_Pagos.Controllers
            return _service.GetAllActividades();   
 
         }
+        [HttpGet("Actividad")]
+        public ActividadDTO GetById(long id)
+        {
+            return _service.GetById(id);
 
+        }
+        [HttpGet("Actividad/{usuario}")]
+        public List<ActividadDTO> GetBySearch(string usuario)
+        {
+            return _service.GetByElement(usuario);
+
+        }
 
 
     }
