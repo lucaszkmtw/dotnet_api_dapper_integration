@@ -79,6 +79,12 @@ namespace API_Pagos.Controllers
             _service.UpdateSqlServer(actividad);
 
         }
+        [HttpPost("DeleteActividad")]
+        public void Delete(long id)
+        {
+            _service.DeleteActividadServer(id);
+
+        }
 
     }
 }

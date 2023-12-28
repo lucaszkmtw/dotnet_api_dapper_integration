@@ -89,5 +89,12 @@ namespace BussinessLogic.API_Pagos.Services
 
             service.Update<ActividadServer>(actividad, repo);
         }
+
+        public void DeleteActividadServer(long id)
+
+        {
+            service.Delete<ActividadServer>(id, repo);
+
+        }
     }
 }
