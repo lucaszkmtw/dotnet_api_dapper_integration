@@ -49,9 +49,17 @@ namespace API_Pagos.Controllers
         }
 
         [HttpPost("AddActividad")]
-        public void Insert(ActividadServer actividad)
+        public IActionResult Insert(ActividadServer actividad)
         {
-           _service.InsertSqlServer(actividad); 
+            try
+            {
+                _service.InsertSqlServer(actividad);
+                return Ok(actividad);
+            }
+            catch(Exception e)
+            {
+                return StatusCode(500, e.Message);
+            }
 
         }
         [HttpPost("UpdateActividad")]
