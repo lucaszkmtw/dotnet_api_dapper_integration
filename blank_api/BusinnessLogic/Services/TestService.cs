@@ -88,9 +88,7 @@ namespace BussinessLogic.API_Pagos.Services
                     try
                     {
                         service.Insert<ActividadServer>(actividad, repo,transaction);
-                        actividad.DDescripcion = "askdskadKAKAKAKAK PUDED";
-                        actividad.DDestinoGdeba = "GDEBA NUEVO";
-                        service.Insert<ActividadServer>(actividad, repo,transaction);   
+                       
                         transaction.Commit();
 
                         // ... más operaciones ...
