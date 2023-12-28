@@ -73,13 +73,11 @@ var logger = new LoggerConfiguration()
 
 
 // Inyectamos los servicios (necesario para que se reconozcan dentro de la API)
-//builder.Services.AddScoped<ActividadesService>();
-//builder.Services.AddScoped<UsuarioActividadService>();
+
 builder.Services.AddScoped<IRepositoryAccess, RepositoryAccess>();
 builder.Services.AddScoped<LoginService>();
-//builder.Services.AddScoped<PagosSerivce>();
-//builder.Services.AddScoped<TesoreriaService>();
-//builder.Services.AddScoped<RcfService>();
+
+builder.Services.AddScoped<TestService>();
 
 //builder.Services.AddScoped<GenericService>();
 //builder.Services.AddScoped<UsuarioService>();

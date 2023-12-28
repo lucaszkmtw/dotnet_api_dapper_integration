@@ -42,21 +42,21 @@ namespace DataAccess.Infrastructure
         }
 
 
-        public void BeginTransaction(IRepositoryAccess repository)
+        public void BeginTransaction(RepositoryAccess repository)
         {
             var connection = repository.GetConnection();
             connection.Open();
             transaction = connection.BeginTransaction();
         }
 
-        public void CommitTransaction(IRepositoryAccess repository)
+        public void CommitTransaction(RepositoryAccess repository)
         {
             transaction?.Commit();
             transaction?.Connection?.Close();
             transaction = null;
         }
 
-        public void RollbackTransaction(IRepositoryAccess repository)
+        public void RollbackTransaction(RepositoryAccess repository)
         {
             transaction?.Rollback();
             transaction?.Connection?.Close();
@@ -76,7 +76,7 @@ namespace DataAccess.Infrastructure
 
 
 
-        public IEnumerable<T> GetBySearch<T>(Search search, IRepositoryAccess repository)
+        public IEnumerable<T> GetBySearch<T>(Search search, RepositoryAccess repository)
         {
             T instance = Activator.CreateInstance<T>();
             IDbConnection con = repository.GetConnection();
@@ -85,7 +85,7 @@ namespace DataAccess.Infrastructure
             return dataEntity.ToList();
         }
 
-        public T GetById<T>(long Id, IRepositoryAccess repository)
+        public T GetById<T>(long Id, RepositoryAccess repository)
         {
             T instance = Activator.CreateInstance<T>();
             IDbConnection con = repository.GetConnection();
@@ -97,7 +97,7 @@ namespace DataAccess.Infrastructure
 
 
 
-        public void Insert<T>(T Model, IRepositoryAccess repository)
+        public void Insert<T>(T Model, RepositoryAccess repository)
         {
             IDbConnection con = repository.GetConnection();
             if (transaction != null)
@@ -113,7 +113,7 @@ namespace DataAccess.Infrastructure
         }
 
 
-        public void Update<T>(T Model, IRepositoryAccess repository)
+        public void Update<T>(T Model, RepositoryAccess repository)
         {
             IDbConnection con = repository.GetConnection();
             T instance = Activator.CreateInstance<T>();
@@ -128,7 +128,7 @@ namespace DataAccess.Infrastructure
             }
             //repository.CloseConnection(con);
         }
-        public void Delete<T>(long id, IRepositoryAccess repository)
+        public void Delete<T>(long id, RepositoryAccess repository)
         {
             IDbConnection con = repository.GetConnection();
             T instance = Activator.CreateInstance<T>();
@@ -145,7 +145,7 @@ namespace DataAccess.Infrastructure
             //repository.CloseConnection(con);
         }
 
-        public DateTime GetCurrentDate(IRepositoryAccess repository)
+        public DateTime GetCurrentDate(RepositoryAccess repository)
         {
             IDbConnection con = repository.GetConnection();
             DateTime date = con.QuerySingle<DateTime>(Querybuilder.CurrentDateTimeQuery());
@@ -154,7 +154,7 @@ namespace DataAccess.Infrastructure
             return date;
         }
 
-        public IEnumerable<T> CustomQuery<T>(string query, IRepositoryAccess repository)
+        public IEnumerable<T> CustomQuery<T>(string query, RepositoryAccess repository)
         {
             IDbConnection con = repository.GetConnection();
             IEnumerable<T> data = con.Query<T>(query);
@@ -162,7 +162,7 @@ namespace DataAccess.Infrastructure
 
             return data;
         }
-        public object FunctionSql(string query, IRepositoryAccess repository)
+        public object FunctionSql(string query, RepositoryAccess repository)
         {
             IDbConnection con = repository.GetConnection();
             var data = con.QuerySingle<string>(query);
@@ -170,7 +170,7 @@ namespace DataAccess.Infrastructure
 
             return data;
         }
-        public void sqlProdcedure(string query,string parametro, IRepositoryAccess repository)
+        public void sqlProdcedure(string query,string parametro, RepositoryAccess repository)
         {
             using (var connection = new OracleConnection(repository.GetConnectionString())) 
             {

@@ -33,7 +33,7 @@ namespace API_SIEP.ORM
         }
 
 
-        public void BeginTransaction(IRepositoryAccess repository)
+        public void BeginTransaction(RepositoryAccess repository)
         {
             //var connection = repository.GetConnection();
             //connection.Open();
@@ -41,7 +41,7 @@ namespace API_SIEP.ORM
             service.BeginTransaction(repository);   
         }
 
-        public void CommitTransaction(IRepositoryAccess repository)
+        public void CommitTransaction(RepositoryAccess repository)
         {
             service.CommitTransaction(repository);
             ////transaction?.Commit();
@@ -49,7 +49,7 @@ namespace API_SIEP.ORM
             ////transaction = null;
         }
 
-        public void RollbackTransaction(IRepositoryAccess repository)
+        public void RollbackTransaction(RepositoryAccess repository)
         {
                 service.RollbackTransaction(repository);      
             ////transaction?.Rollback();
@@ -70,7 +70,7 @@ namespace API_SIEP.ORM
 
 
 
-        public IEnumerable<T> GetBySearch<T>(Search search, IRepositoryAccess repository)
+        public IEnumerable<T> GetBySearch<T>(Search search, RepositoryAccess repository)
         {
          
             IEnumerable<T> dataEntity = service.GetBySearch<T>(search, repository); 
@@ -78,7 +78,7 @@ namespace API_SIEP.ORM
             return dataEntity.ToList();
         }
 
-        public T GetById<T>(long Id, IRepositoryAccess repository)
+        public T GetById<T>(long Id, RepositoryAccess repository)
         {
             ////T instance = Activator.CreateInstance<T>();
             ////IDbConnection con = repository.GetConnection();
@@ -91,34 +91,34 @@ namespace API_SIEP.ORM
 
 
 
-        public void Insert<T>(T Model, IRepositoryAccess repository)
+        public void Insert<T>(T Model, RepositoryAccess repository)
         {
             service.Insert<T>(Model, repository);
             //repository.CloseConnection(con);
         }
 
 
-        public void Update<T>(T Model, IRepositoryAccess repository)
+        public void Update<T>(T Model, RepositoryAccess repository)
         {
           
             service.Update<T>(Model, repository);  
             //repository.CloseConnection(con);
         }
-        public void Delete<T>(long id, IRepositoryAccess repository)
+        public void Delete<T>(long id, RepositoryAccess repository)
         {
           service.Delete<T>(id, repository);   
 
             //repository.CloseConnection(con);
         }
 
-        public DateTime GetCurrentDate(IRepositoryAccess repository)
+        public DateTime GetCurrentDate(RepositoryAccess repository)
         {
 
 
             return service.GetCurrentDate(repository); 
         }
 
-        public IEnumerable<T> CustomQuery<T>(string query, IRepositoryAccess repository)
+        public IEnumerable<T> CustomQuery<T>(string query, RepositoryAccess repository)
         {
     
             IEnumerable<T> data = service.CustomQuery<T>(query, repository);   
@@ -126,7 +126,7 @@ namespace API_SIEP.ORM
 
             return data;
         }
-        public object SqlFunction(string query, IRepositoryAccess repository)
+        public object SqlFunction(string query, RepositoryAccess repository)
         {
 
             var data = service.FunctionSql(query, repository);
@@ -134,7 +134,7 @@ namespace API_SIEP.ORM
 
             return data;
         }
-        public void sqlProdcedure(string query,string parametro, IRepositoryAccess repository)
+        public void sqlProdcedure(string query,string parametro, RepositoryAccess repository)
         {
 
                     service.sqlProdcedure(query, parametro, repository);
