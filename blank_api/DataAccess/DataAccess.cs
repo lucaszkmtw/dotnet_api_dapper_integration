@@ -1,6 +1,7 @@
 ﻿using DataAccess.Helpers;
 using DataAccess.Infrastructure;
 using DataAccess.Infrastructure.Interfaces;
+using System.Data;
 
 namespace API_SIEP.ORM
 {
@@ -33,12 +34,12 @@ namespace API_SIEP.ORM
         }
 
 
-        public void BeginTransaction(IRepositoryAccess repository)
+        public IDbTransaction BeginTransaction(IRepositoryAccess repository)
         {
             //var connection = repository.GetConnection();
             //connection.Open();
             //transaction = connection.BeginTransaction();
-            service.BeginTransaction(repository);   
+            return service.BeginTransaction(repository);   
         }
 
         public void CommitTransaction(IRepositoryAccess repository)
@@ -142,6 +143,24 @@ namespace API_SIEP.ORM
 
         }
 
+        public void Insert<T>(T Model, IRepositoryAccess repository, IDbTransaction transacctiion)
+        {
+            service.Insert<T>(Model, repository,transacctiion);
+            //repository.CloseConnection(con);
+        }
 
+
+        public void Update<T>(T Model, IRepositoryAccess repository, IDbTransaction transacctiion)
+        {
+
+            service.Update<T>(Model, repository);
+            //repository.CloseConnection(con);
+        }
+        public void Delete<T>(long id, IRepositoryAccess repository, IDbTransaction transacctiion)
+        {
+            service.Delete<T>(id, repository);
+
+            //repository.CloseConnection(con);
+        }
     }
 }

@@ -49,5 +49,9 @@ namespace DataAccess.Infrastructure
         {
             return _connection.Value;
         }
+        public IDbTransaction BeginTransacction()
+        {
+            return _connection.Value.BeginTransaction();
+        }
     }
 }

@@ -12,6 +12,7 @@ using DataAccess.Infrastructure.Transactions;
 using System.Transactions;
 using DataAccess.Infrastructure.Interfaces;
 using Oracle.ManagedDataAccess.Client;
+using System.Data.Common;
 
 namespace DataAccess.Infrastructure
 {
@@ -23,7 +24,6 @@ namespace DataAccess.Infrastructure
     {
         protected SqlBuilder Querybuilder = SqlBuilder.Instance;
 
-        private IDbTransaction transaction; // Transaction object
 
 
 
@@ -42,25 +42,24 @@ namespace DataAccess.Infrastructure
         }
 
 
-        public void BeginTransaction(IRepositoryAccess repository)
+        public IDbTransaction BeginTransaction(IRepositoryAccess repository)
         {
-            var connection = repository.GetConnection();
-            connection.Open();
-            transaction = connection.BeginTransaction();
+
+            return repository.BeginTransacction();
         }
 
         public void CommitTransaction(IRepositoryAccess repository)
         {
-            transaction?.Commit();
-            transaction?.Connection?.Close();
-            transaction = null;
+            //transaction?.Commit();
+            //transaction?.Connection?.Close();
+            //transaction = null;
         }
 
         public void RollbackTransaction(IRepositoryAccess repository)
         {
-            transaction?.Rollback();
-            transaction?.Connection?.Close();
-            transaction = null;
+            ////transaction?.Rollback();
+            ////transaction?.Connection?.Close();
+            ////transaction = null;
         }
 
 
@@ -97,12 +96,12 @@ namespace DataAccess.Infrastructure
 
 
 
-        public void Insert<T>(T Model, IRepositoryAccess repository)
+        public void Insert<T>(T Model, IRepositoryAccess repository, IDbTransaction transaction = null)
         {
             IDbConnection con = repository.GetConnection();
             if (transaction != null)
             {
-                con.Execute(Querybuilder.InsertQuery<T>(Model), transaction);
+                con.Execute(Querybuilder.InsertQuery<T>(Model), transaction: transaction);
             }
             else
             {
@@ -113,13 +112,13 @@ namespace DataAccess.Infrastructure
         }
 
 
-        public void Update<T>(T Model, IRepositoryAccess repository)
+        public void Update<T>(T Model, IRepositoryAccess repository, IDbTransaction transactions = null)
         {
             IDbConnection con = repository.GetConnection();
             T instance = Activator.CreateInstance<T>();
-            if (transaction != null)
+            if (transactions != null)
             {
-                con.Execute(Querybuilder.UpdateQuery<T>(Model), transaction);
+                con.Execute(Querybuilder.UpdateQuery<T>(Model), transactions);
 
             }
             else
@@ -128,18 +127,18 @@ namespace DataAccess.Infrastructure
             }
             //repository.CloseConnection(con);
         }
-        public void Delete<T>(long id, IRepositoryAccess repository)
+        public void Delete<T>(long id, IRepositoryAccess repository, IDbTransaction transactions = null)
         {
             IDbConnection con = repository.GetConnection();
             T instance = Activator.CreateInstance<T>();
             con.Execute(Querybuilder.DeleteQuery<T>(id, instance));
-            if (transaction != null)
+            if (transactions != null)
             {
-                con.Execute(Querybuilder.DeleteQuery<T>(id, instance), transaction);
+                con.Execute(Querybuilder.DeleteQuery<T>(id, instance), transactions);
             }
             else
             {
-                con.Execute(Querybuilder.DeleteQuery<T>(id, instance), transaction);
+                con.Execute(Querybuilder.DeleteQuery<T>(id, instance));
             }
 
             //repository.CloseConnection(con);

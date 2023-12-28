@@ -2,6 +2,7 @@
 using BusinessLogic.ApiRequest;
 using BusinessLogic.DTO;
 using BussinessLogic.API_Pagos.Data.Encrypt;
+using Dapper;
 using DataAccess.Helpers;
 using DataAccess.Infrastructure;
 using DataAccess.Infrastructure.Interfaces;
@@ -80,8 +81,30 @@ namespace BussinessLogic.API_Pagos.Services
         public void InsertSqlServer(ActividadServer actividad)
         {
 
+            using (var connection = repo.GetConnection())
+            {
+                using (var transaction = connection.BeginTransaction())
+                {
+                    try
+                    {
+                        service.Insert<ActividadServer>(actividad, repo,transaction);
+                        actividad.DDescripcion = "askdskadKAKAKAKAK PUDED";
+                        actividad.DDestinoGdeba = "GDEBA NUEVO";
+                        service.Insert<ActividadServer>(actividad, repo,transaction);   
+                        transaction.Commit();
 
-            service.Insert<ActividadServer>(actividad, repo);
+                        // ... más operaciones ...
+
+                    }
+                    catch
+                    {
+                        transaction.Rollback();
+                        throw;
+                    }
+                }
+            }
+
+
         }
         public void UpdateSqlServer(ActividadServer actividad)
         {
