@@ -8,6 +8,8 @@ using DataAccess.Infrastructure.Interfaces;
 using DataAccess.Mapping;
 using Mapster;
 using Microsoft.Extensions.Configuration;
+using System.Configuration;
+using System.Data.SqlClient;
 
 namespace BussinessLogic.API_Pagos.Services
 {
@@ -22,22 +24,6 @@ namespace BussinessLogic.API_Pagos.Services
 
         }
 
-        //public async Task<bool> VerifyPassword(RequestUsuario usuario)
-        //{
-
-        //    string pass = _config.GetSection("KeyEncript:Key").Value;
-        //    if (pass == usuario.Password )
-        //    {
-        //        return true;
-        //    }
-        //    else
-        //    {
-        //        return false;
-        //    }
-       
-
-
-        //}
 
         public List<ActividadDTO> GetAllActividades()
         {
@@ -68,11 +54,40 @@ namespace BussinessLogic.API_Pagos.Services
             service.Update<Actividad>(actividad, repo);
             
         }
-        public void UpdateActividad(long id)
+        public void DeleteActividad(long id)
 
         {
             service.Delete<Actividad>(id, repo);
 
+        }
+
+        public IEnumerable<ActividadServer> ActividadSqlServer()
+        {
+          return  service.GetAll<ActividadServer>(repo);
+        }
+        public ActividadDTO GetByIdSqlServer(long id)
+        {
+            return service.GetById<Actividad>(id, repo).Adapt<ActividadDTO>();
+        }
+        public List<ActividadDTO> GetByElementSqlServer(string element)
+        {
+            Search search = new Search(typeof(Actividad));
+            search.AddAlias(new KeyValuePair<string, object>("C_USUARIO", element));
+
+            return service.GetBySearch<Actividad>(search, repo).Adapt<List<ActividadDTO>>();
+        }
+
+        public void InsertSqlServer(ActividadServer actividad)
+        {
+
+
+            service.Insert<ActividadServer>(actividad, repo);
+        }
+        public void UpdateSqlServer(ActividadServer actividad)
+        {
+
+
+            service.Update<ActividadServer>(actividad, repo);
         }
     }
 }

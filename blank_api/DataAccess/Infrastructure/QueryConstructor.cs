@@ -61,6 +61,7 @@ namespace DataAccess.Infrastructure
 
 
         }
+
         public string FromTableAndSchema<T>(T instance)
         {
 
@@ -69,9 +70,17 @@ namespace DataAccess.Infrastructure
             string table = GetStringAttribute<T>(instance, "_table");
             //SchemaAttribute Schema = (SchemaAttribute)Attribute.GetCustomAttribute(typeof(T), typeof(SchemaAttribute));
             //TableAttribute table = (TableAttribute)Attribute.GetCustomAttribute(typeof(T), typeof(TableAttribute));
+            string fromtable = "";
+            if (schema == "")
+            {
+                fromtable = $" FROM {table}";
+            }
+            else
+            {
+                fromtable = $" FROM {schema}.{table}";
+            }
 
 
-            string fromtable = $" FROM {schema}.{table}";
 
             return fromtable;
         }
@@ -152,7 +161,15 @@ namespace DataAccess.Infrastructure
             //Type attributesModel = model.GetType();
             string schema = GetStringAttribute<T>(model, "_schema");
             string table = GetStringAttribute<T>(model, "_table");
-            string query = $"INSERT INTO {schema}.{table} ";
+            string query = "";
+            if (schema == "")
+            {
+                query = $"INSERT INTO {table}";
+            }
+            else
+            {
+                query = $"INSERT INTO {schema}.{table}";
+            }
 
             return query;
 
@@ -229,7 +246,7 @@ namespace DataAccess.Infrastructure
                             DateTime date = Convert.ToDateTime(prop.GetValue(model, null));
                             values += $"TO_DATE('{date.Year}/{date.Month}/{date.Day} {date.Hour}:{date.Minute}:{date.Second}', 'yyyy/mm/dd hh24:mi:ss'),";
                         }
-                   
+
 
                     }
 
@@ -261,7 +278,7 @@ namespace DataAccess.Infrastructure
             KeyValuePair<string, KeyValuePair<string, string>> IdMapping = GetAttributeId<T>(model, "_id");
             string schema = GetStringAttribute<T>(model, "_schema");
             string table = GetStringAttribute<T>(model, "_table");
-            string query = $"UPDATE {schema}.{table} SET ";
+            string query = $"UPDATE {table} SET ";
 
 
             string values = "";
@@ -298,7 +315,7 @@ namespace DataAccess.Infrastructure
                         {
                             //columns += $"{mapping[prop.Name]} ,";
                             DateTime date = Convert.ToDateTime(prop.GetValue(model, null));
-                            values += $"{mapping[prop.Name]} = TO_DATE('{date.Year}/{date.Month}/{date.Day} {date.Hour}:{date.Minute}', 'yyyy/mm/dd hh24:mi') ,";
+                            values += $"{mapping[prop.Name]} = '{date.Year}/{date.Month}/{date.Day} {date.Hour}:{date.Minute}' ,";
                         }
 
                     }
@@ -311,5 +328,89 @@ namespace DataAccess.Infrastructure
 
             return $"{query}{values.Remove(values.Length - 1)}";
         }
+
+
+
+        public KeyValuePair<string, string> ColumnsAndValuesWithoutId<T>(T model)
+        {
+            Dictionary<string, string> mapping = GetAttributeMapping<T>(model, "_mappings");
+            KeyValuePair<string, KeyValuePair<string, string>> IdMapping = GetAttributeId<T>(model, "_id");
+            string schema = GetStringAttribute<T>(model, "_schema");
+            string table = GetStringAttribute<T>(model, "_table");
+            //SchemaAttribute Schema = (SchemaAttribute)Attribute.GetCustomAttribute(typeof(T), typeof(SchemaAttribute));
+            string values = "";
+            string columns = "";
+
+
+
+            PropertyInfo[] props = model.GetType().GetProperties();
+
+            foreach (PropertyInfo prop in props)
+            {
+
+                if (IdMapping.Value.Key != prop.Name)
+                {
+
+
+
+
+                    if (prop.GetValue(model, null) != null)
+                    {
+                        if (prop.PropertyType == typeof(string))
+                        {
+                            columns += $"{mapping[prop.Name]} ,";
+                            values += $"'{prop.GetValue(model, null)}' ,";
+                        }
+                        if (prop.PropertyType == typeof(bool) && prop.GetValue(model, null) is bool value)
+                        {
+                            columns += $"{mapping[prop.Name]} ,";
+                            if (value is true) { values += $"{1} ,"; }
+                            if (value is false) { values += $"{0} ,"; }
+                            if (value == null) { values += $"'{null}' ,"; }
+                        }
+                        if (prop.PropertyType == typeof(long) || prop.PropertyType == typeof(int))
+                        {
+                            columns += $"{mapping[prop.Name]} ,";
+                            values += $"{prop.GetValue(model, null)} ,";
+                        }
+                        if (prop.PropertyType == typeof(long?))
+                        {
+                            columns += $"{mapping[prop.Name]} ,";
+                            values += $"{prop.GetValue(model, null)} ,";
+                        }
+                        if (prop.PropertyType == typeof(DateTime))
+                        {
+                            columns += $"{mapping[prop.Name]} ,";
+                            DateTime date = Convert.ToDateTime(prop.GetValue(model, null));
+                            values += $"'{date.Year}/{date.Month}/{date.Day} {date.Hour}:{date.Minute}:{date.Second}',";
+                        }
+
+
+                    }
+
+                }
+                //else
+                //{
+                //    if (IdMapping.Key != null)
+                //    {
+                //        columns += $"{IdMapping.Key} ,";
+                //        values += $"{schema}.{IdMapping.Value.Value}.nextval ,";
+                //    }
+                //}
+            }
+
+
+
+            KeyValuePair<string, string> data = new KeyValuePair<string, string>(columns.Remove(columns.Length - 1), values.Remove(values.Length - 1));
+
+            return data;
+        }
+
+
+
+
+
+
+
     }
 }

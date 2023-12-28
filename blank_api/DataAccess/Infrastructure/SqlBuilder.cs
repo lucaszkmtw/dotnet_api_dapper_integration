@@ -58,7 +58,7 @@ namespace DataAccess.Infrastructure
 
         public string InsertQuery<T>(T model)
         {
-            KeyValuePair<string, string> data = ColumnsAndValues<T>(model);
+            KeyValuePair<string, string> data = ColumnsAndValuesWithoutId<T>(model);
 
             string query = $" {InsertMethod<T>(model)}  ({data.Key}) VALUES ({data.Value}) ";
             return query;
