@@ -1,4 +1,5 @@
-﻿using Oracle.ManagedDataAccess.Client;
+﻿using Npgsql;
+using Oracle.ManagedDataAccess.Client;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -13,8 +14,8 @@ namespace DataAccess.Infrastructure.Interfaces
     {
 
         IDbTransaction BeginTransacction();
-        SqlConnection GetConnection();
-        void CloseConnection(SqlConnection conn);
+        NpgsqlConnection GetConnection();
+        void CloseConnection(NpgsqlConnection conn);
         string GetConnectionString();
 
     }

@@ -13,14 +13,14 @@ namespace API_Pagos.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class TestSqlServerController : ControllerBase
+    public class TestPostgresController : ControllerBase
     {
         //WE GET THE TEST SERVICE WITH INDEPENDENCY INJECTION 
         //TESTSERVICE MAKE REFER TO ALL THE FUNCTION THAT ARE IN THE MIDDLE OF THE COMUNNINCATION WITH DATABASE (BUSINNES LOGIC)
         private readonly TestService _service;
         private readonly IConfiguration _config;
 
-        public TestSqlServerController(TestService service, IConfiguration config)
+        public TestPostgresController(TestService service, IConfiguration config)
         {
             _service = service;
             _config = config;

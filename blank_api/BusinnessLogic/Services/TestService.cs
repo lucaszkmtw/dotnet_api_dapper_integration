@@ -9,7 +9,9 @@ using DataAccess.Infrastructure.Interfaces;
 using DataAccess.Mapping;
 using Mapster;
 using Microsoft.Extensions.Configuration;
+using Npgsql;
 using System.Configuration;
+using System.Data;
 using System.Data.SqlClient;
 
 namespace BussinessLogic.API_Pagos.Services
@@ -119,5 +121,11 @@ namespace BussinessLogic.API_Pagos.Services
             service.Delete<ActividadServer>(id, repo);
 
         }
+
+        public IEnumerable<ActividadPostgres> Prueba()
+        {
+           return  service.GetAll<ActividadPostgres>(repo);
+        }
+
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using DataAccess.Infrastructure.Interfaces;
 using Microsoft.Extensions.Configuration;
+using Npgsql;
 using Oracle.ManagedDataAccess.Client;
 using System;
 using System.Data;
@@ -11,32 +12,32 @@ namespace DataAccess.Infrastructure
     public class RepositoryAccess : IRepositoryAccess
     {
         private readonly IConfiguration _configuration;
-        private Lazy<SqlConnection> _connection;
+        private Lazy<NpgsqlConnection> _connection;
 
         public RepositoryAccess(IConfiguration config)
         {
             _configuration = config;
-            _connection = new Lazy<SqlConnection>(CreateConnection);
+            _connection = new Lazy<NpgsqlConnection>(CreateConnection);
         }
 
-        private SqlConnection CreateConnection()
+        private NpgsqlConnection CreateConnection()
         {
-            var connectionString = _configuration.GetConnectionString("SQLserverConnection");
-            var connection = new SqlConnection(connectionString);
+            var connectionString = _configuration.GetConnectionString("PostgresConnection");
+            var connection = new NpgsqlConnection(connectionString);
             connection.Open();
             return connection;
         }
 
-        public SqlConnection GetConnection()
+        public NpgsqlConnection GetConnection()
         {
             return _connection.Value;
         }
 
         public string GetConnectionString()
         {
-            return _configuration.GetConnectionString("OracleConnection");
+            return _configuration.GetConnectionString("PostgresConnection");
         }
-        public void CloseConnection(SqlConnection connection)
+        public void CloseConnection(NpgsqlConnection connection)
         {
             if (connection != null && connection.State != ConnectionState.Closed)
             {
@@ -45,7 +46,7 @@ namespace DataAccess.Infrastructure
             }
         }
 
-        public SqlConnection GetActiveSession()
+        public NpgsqlConnection GetActiveSession()
         {
             return _connection.Value;
         }
